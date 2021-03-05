@@ -44,7 +44,10 @@ def tool():
     }
     login = s.post(url, headers=header, data=data)
     res = login.text
-    if ('"logged_in_user"') in res: print(green+'[-] Done login', user)
+    if ('"logged_in_user"') in res: print(green+'[-] Done login ->', user)
+    elif ('"checkpoint_challenge_required"') in res:
+        print(red+f'[-] Username is secure -> @{user} !')
+        exit()
     else:
         print(red+'[-] Error', res)
         exit()
@@ -52,6 +55,7 @@ def tool():
     username = input(green+'[+] Enter username you want: ')
     url2 = (f'https://www.instagram.com/{username}/?__a=1')
     r = s.get(url2)
+    #error = r.text
     the_user = '[+] Username: ' + str(r.json()['graphql']['user']['username'])
     followers = '[+] Followers: ' + str(r.json()['graphql']['user']['edge_followed_by']['count'])
     following = '[+] Following: ' + str(r.json()['graphql']['user']['edge_follow']['count'])
@@ -64,6 +68,7 @@ def tool():
     highlight_num = '[+] HighLights Number: ' + str(r.json()['graphql']['user']['highlight_reel_count'])
     bus_account = '[+] Business Account: ' + str(r.json()['graphql']['user']['is_business_account'])
     category = '[+] Category: ' + str(r.json()['graphql']['user']['category_name'])
+    print('-------------------------------------------------------------------------------------------------------------')
     print(the_user)
     print(followers)
     print(following)
@@ -76,7 +81,8 @@ def tool():
     print(highlight_num)
     print(bus_account)
     print(category)
-    input()
+    print('-------------------------------------------------------------------------------------------------------------')
+    input(' ')
 tool()
 while True:
     print('\r\n')
